@@ -19,7 +19,8 @@ describe('app routes', () => {
   });
 
   afterAll(()=> {
-    return mongoose.connection.close();
+    return mongoose.connection.close()
+      .then(() => mongo.stop());
   });
   
   it('creates a new dog', () => {
@@ -123,7 +124,7 @@ describe('app routes', () => {
         );
       });
   });
-  
+
   it('deletes a dog by id', async() => {
     const dogID = await Dog.create({
       name: 'Spot',
