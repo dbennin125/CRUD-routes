@@ -77,22 +77,70 @@ describe('app routes', () => {
       });
   });
 
-  it('creates a new dog', () => {
+  it('finds a new dog by id', async() => {
+    const dogID = await Dog.create({
+      name: 'Spot',
+      age: 5,
+      color: 'red'
+    });
+
     return request(app)
-      .post('/dogs')
-      .send({
-        name: 'Spot',
-        age: 5,
-        color: 'red'
-      })
+      .get(`/dogs/${dogID._id}`)
       .then(res => {
-        expect(res.body).toEqual({
-          _id: expect.anything(),
-          name: 'Spot',
-          age: 5,
-          color: 'red',
-          __v: 0
-        });
+        expect(res.body).toEqual(
+          {
+            _id: dogID.id,
+            name: 'Spot',
+            age: 5,
+            color: 'red',
+            __v: 0
+          }
+        );
+      });
+  });
+  it('will update a specific dog by id', async() => {
+    const dogID = await Dog.create({
+      name: 'Spot',
+      age: 5,
+      color: 'red'
+    });
+
+    const newName = 'Rover';
+
+    return request(app)
+      .patch(`/dogs/${dogID._id}`)
+      .send({ name: newName })
+      .then(res => {
+        expect(res.body).toEqual(
+          {
+            _id: dogID.id,
+            name: 'Rover',
+            age: 5,
+            color: 'red',
+            __v: 0
+          }
+        );
+      });
+  });
+  it('deletes a dog by id', async() => {
+    const dogID = await Dog.create({
+      name: 'Spot',
+      age: 5,
+      color: 'red'
+    });
+
+    return request(app)
+      .delete(`/dogs/${dogID._id}`)
+      .then(res => {
+        expect(res.body).toEqual(
+          {
+            _id: dogID.id,
+            name: expect.anything(String),
+            age: expect.any(Number),
+            color: expect.any(String),
+            __v: 0
+          }
+        );
       });
   });
 });
