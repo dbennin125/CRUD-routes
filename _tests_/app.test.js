@@ -98,6 +98,7 @@ describe('app routes', () => {
         );
       });
   });
+
   it('will update a specific dog by id', async() => {
     const dogID = await Dog.create({
       name: 'Spot',
@@ -122,6 +123,7 @@ describe('app routes', () => {
         );
       });
   });
+  
   it('deletes a dog by id', async() => {
     const dogID = await Dog.create({
       name: 'Spot',
